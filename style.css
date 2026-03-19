@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600;700&display=swap');
+
+/* --- BIẾN MÀU SẮC --- */
+:root {
+    --c-savings: #24282B;
+    --bg-savings: #24282B26; 
+    --c-price: #36436F;
+    --bg-price: #36436F26;
+    --c-interest: #D9A05B;
+    --bg-interest: #D9A05B26;
+    --c-invest: #5B9DA6;
+    --bg-invest: #5B9DA626;
+    --c-rent: #B6000F;
+    --bg-rent: #B6000F26;
+    --bg-empty: #d1d5db;
+}
+
+/* --- CẤU HÌNH CHUNG --- */
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.hidden { display: none !important; }
+.font-mono { font-family: 'Space Mono', monospace; }
+
+/* --- HIỆU ỨNG AMBIENT ORBS (CẦU SÁNG) --- */
+.orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06; 
+}
+.orb-1 { width: 600px; height: 600px; background: #990011; top: -200px; right: -200px; }
+.orb-2 { width: 400px; height: 400px; background: #E17055; bottom: 10%; left: -150px; }
+
+/* --- ANIMATION --- */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+}
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+.screen-transition {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- MÀN HÌNH ĐĂNG NHẬP --- */
+#login-screen { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 90vh; 
+    position: relative;
+    z-index: 1;
+}
+.login-box { 
+    background: white; 
+    padding: 40px; 
+    border-radius: 24px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+    width: 350px; 
+}
+.login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #eee; border-radius: 12px; }
+.login-box button { width: 100%; padding: 12px; background-color: #990011; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+.login-box button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+/* --- DASHBOARD --- */
+#dashboard-screen { position: relative; z-index: 1; }
+.header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 25px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 30px; }
+.stats-container { display: flex; gap: 20px; margin-bottom: 30px; }
+.stat-card { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); flex: 1; text-align: center; }
+
+/* --- BẢNG GIAO DỊCH --- */
+#transaction-table-body tr { border-bottom: 1px solid #f8f9fa; transition: 0.2s; }
+#transaction-table-body tr:hover { background-color: #fcfcfc; }
+.text-income { color: #28a745 !important; font-weight: bold; }
+.text-expense { color: #dc3545 !important; font-weight: bold; }
+
+/* SỬA LỖI DÒNG 57 TẠI ĐÂY: Chuyển Tailwind class thành CSS thuần */
+.cat-badge { 
+    padding: 4px 8px; 
+    background-color: #f3f4f6; 
+    border-radius: 6px; 
+    font-size: 12px; 
+    color: #4b5563; 
+}
+
+/* --- SLIDERS --- */
+#sandbox-savings { accent-color: var(--c-savings); }
+#sandbox-price { accent-color: var(--c-price); }
+#sandbox-interest { accent-color: var(--c-interest); }
+#sandbox-invest { accent-color: var(--c-invest); }
+#sandbox-rent-inc { accent-color: var(--c-rent); }
+
+/* Hiệu ứng xoay tròn Loading */
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #990011; /* Màu đỏ đô thương hiệu của bạn */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    font-family: 'Space Mono', monospace;
+}
+.hidden {
+    display: none;
+}
+
+.login-box {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* Thêm hiệu ứng mờ dần và trượt lên cho toàn bộ Dashboard */
+#dashboard-screen {
+    animation: dashboardFadeIn 0.5s ease-out;
+}
+
+@keyframes dashboardFadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); /* Bắt đầu từ dưới một chút */
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); /* Trượt về vị trí cũ */
+    }
+}
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(52, 211, 153, 0.3); /* Màu xanh Emerald mờ */
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(52, 211, 153, 0.5);
+}
+
+.animate-fade {
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Container chứa các thông báo ở góc màn hình */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Tinh chỉnh lại Toast Item */
+.toast-item {
+    min-width: 320px; /* Tăng nhẹ chiều rộng để chứa ảnh to hơn */
+    padding: 12px 20px; /* Giảm padding dọc một chút vì ảnh GIF đã có chiều cao */
+    background: rgba(19, 36, 25, 0.85); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    display: flex;
+    align-items: center; /* Quan trọng: Giúp ảnh và chữ luôn thẳng hàng ngang */
+    gap: 15px; /* Tăng khoảng cách giữa ảnh và chữ cho thoáng */
+    border-radius: 20px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Định dạng riêng cho container chứa Icon GIF */
+.toast-icon {
+    flex-shrink: 0; /* Ép icon KHÔNG được co lại dù chữ có dài đến đâu */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Đảm bảo ảnh GIF hiển thị mượt */
+.toast-icon img {
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); /* Tạo hiệu ứng sáng nhẹ quanh GIF */
+}
+@keyframes toastIn {
+    from { 
+        opacity: 0; 
+        transform: translateX(100px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0); 
+    }
+}
+/* Thêm đoạn này để phân biệt loại thông báo */
+.toast-item.success { border-left: 4px solid #10b981; } /* Xanh Emerald cho thành công */
+.toast-item.error   { border-left: 4px solid #ef4444; } /* Đỏ Rose cho lỗi */
+.toast-item.info    { border-left: 4px solid #3b82f6; } /* Xanh dương cho thông tin */

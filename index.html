@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Finance Tracker</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="templatemo-glass-admin-style.css">
+
+    <script src="scripts/auth.js"></script>
+</head>
+
+<body>
+    <div class="background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div id="app-layout" class="dashboard">
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header mb-8 mt-2">
+                <div class="flex items-center gap-3">
+
+                    <div class="w-11 h-11 flex-shrink-0">
+                        <img src="assets/gif/coin.gif" alt="Finance Tracker Logo" class="h-full w-full object-contain">
+                    </div>
+
+                    <div class="flex flex-col justify-center">
+                        <span class="text-xl font-bold text-white whitespace-nowrap leading-tight">Finance
+                            Tracker</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-section">
+                    <span class="nav-section-title">Features</span>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link active">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                                </svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="analytics.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                    <path d="M2 17l10 5 10-5" />
+                                    <path d="M2 12l10 5 10-5" />
+                                </svg>
+                                Analytics
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="settings.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="3" />
+                                    <path
+                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                </svg>
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-section">
+                    <span class="nav-section-title">Account</span>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" onclick="logout()">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                    <polyline points="16 17 21 12 16 7" />
+                                    <line x1="21" y1="12" x2="9" y2="12" />
+                                </svg>
+                                Sign out
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="mt-auto pt-6 pb-4 w-full text-center border-t border-white/10">
+                <button onclick="openCreditsModal()"
+                    class="text-[12px] text-white/40 hover:text-white transition-colors underline decoration-white/20 underline-offset-4">
+                    Resources & Copyright
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="max-w-6xl mx-auto">
+                <div
+                    class="header glass-card flex flex-col md:flex-row justify-between items-start md:items-center mb-8 bg-white/10 backdrop-blur-md p-6 rounded-3xl shadow-sm border border-white/20">
+                    <div class="mb-4 md:mb-0">
+
+                        <h2 class="font-mono text-2xl font-bold uppercase text-white mb-6 flex items-center">
+                            Finance Tracker Dashboard
+                        </h2>
+
+                        <p id="user-greeting" class="text-gray-200 font-medium mt-1">Loading information...</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="openModal()"
+                            class="bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-emerald-700 transition shadow-md hover:shadow-lg">
+                            + Add transaction
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-container grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+                    <div
+                        class="glass-card stat-card p-6 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-md">
+                        <h3 class="text-gray-300 font-medium mb-2 uppercase tracking-wider text-sm">Account Balance</h3>
+                        <div class="amount balance text-3xl font-bold text-white font-mono" id="totalBalance">0 ₫</div>
+                    </div>
+                    <div
+                        class="glass-card stat-card p-6 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-md">
+                        <h3 class="text-gray-300 font-medium mb-2 uppercase tracking-wider text-sm">Total Revenue</h3>
+                        <div class="amount income text-3xl font-bold text-emerald-400 font-mono" id="totalIncome">0 ₫
+                        </div>
+                    </div>
+                    <div
+                        class="glass-card stat-card p-6 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-md">
+                        <h3 class="text-gray-300 font-medium mb-2 uppercase tracking-wider text-sm">Total Expenses</h3>
+                        <div class="amount expense text-3xl font-bold text-rose-400 font-mono" id="totalExpense">0 ₫
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div
+                        class="md:col-span-1 glass-card p-6 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-md flex flex-col items-center">
+                        <h3 class="text-lg font-mono font-bold mb-4 flex text-white">Category Allocation</h3>
+
+                        <div style="width: 200px; height: 200px;">
+                            <canvas id="incomeExpenseChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div
+                        class="md:col-span-2 glass-card p-6 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-md flex flex-col justify-start">
+                        <h3 class="text-xl font-mono font-bold mb-2 flex text-white">Cash Flow Analysis</h3>
+                        <p id="financial-advice" class="text-gray-300 italic">"Analyzing data..."</p>
+                    </div>
+                </div>
+
+                <div
+                    class="glass-card p-6 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-md mb-10 overflow-hidden">
+                    <div class="flex flex-col md:flex-row justify-between items-start mb-6 gap-4">
+                        <div class="flex flex-col gap-3">
+
+                            <p
+                                class="font-mono text-[16px] font-bold tracking-[2px] uppercase text-white flex items-center gap-2">
+                                Transaction history
+                            </p>
+
+                            <select id="category-select-filter"
+                                class="bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2 text-gray-400 focus:outline-none focus:border-emerald-500 w-[180px] text-sm cursor-pointer hover:bg-white/5 transition">
+
+                                <option value="">All Categories</option>
+
+                                <option value="Housing">Housing</option>
+
+                                <option value="Transportation">Transportation</option>
+
+                                <option value="Food and Drink">Food and Drink</option>
+
+                                <option value="Entertainment">Entertainment</option>
+
+                                <option value="Salary">Salary</option>
+
+                                <option value="Bonus">Bonus</option>
+
+                            </select>
+                        </div>
+
+                        <div class="mt-1">
+                            <input type="text" id="global-search"
+                                class="w-[180px] bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500 transition text-sm placeholder-gray-400"
+                                placeholder="Search for everything...">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <div class="min-w-[700px] overflow-y-auto max-h-[500px] pr-2 pb-2">
+                            <div
+                                class="grid grid-cols-12 gap-4 sticky top-0 bg-[#0f172a]/95 backdrop-blur-sm z-10 py-3 px-4 text-gray-400 text-xs uppercase tracking-wider font-semibold border-b border-white/10 mb-2 rounded-t-xl">
+                                <div class="col-span-2 text-left">Date</div>
+                                <div class="col-span-4 text-left">Description</div>
+                                <div class="col-span-3 text-left">Category</div>
+                                <div class="col-span-2 text-right">Amount</div>
+                                <div class="col-span-1 text-right"></div>
+                            </div>
+
+                            <div id="transaction-table-body" class="flex flex-col gap-2 pb-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="text-3xl font-bold mb-6 text-center text-[#FFAA80] flex items-center justify-center gap-3">
+                    <img src="assets/gif/firework.gif" alt="Firework Icon" class="w-12 h-12 object-contain pb-1">
+
+                    FINANCIAL FREEDOM FUTURE
+                </h1>
+                <div id="smart-wealth-widget" class="space-y-6">
+                    <div class="glass-card border border-[#C4B5FD]/40 p-8 rounded-3xl bg-white/5 backdrop-blur-md">
+                        <p
+                            class="font-mono text-[16px] font-bold tracking-[2px] uppercase text-[#C4B5FD] mb-6 flex items-center gap-2">
+                            <img src="assets/gif/growth.gif" alt="Growth Icon" class="w-10 h-10 object-contain pb-0.5">
+                            Projected Future Assets
+                        </p>
+                        <div class="h-[300px] relative"><canvas id="projectionChart"></canvas></div>
+                    </div>
+                    <div
+                        class="glass-card border border-[#d4a574]/50 p-8 rounded-3xl mt-2 relative overflow-hidden bg-white/5 backdrop-blur-md">
+                        <p
+                            class="font-mono text-[16px] font-bold tracking-[2px] uppercase text-[#e8c9a0] mb-6 flex items-center gap-2">
+                            <img src="assets/gif/check.gif" alt="Check Icon" class="w-10 h-10 object-contain pb-0.5">
+                            What-If Visualization
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-6 gap-8 relative z-10">
+                            <div class="md:col-span-2">
+                                <div class="flex justify-between mb-3"><label
+                                        class="text-[15px] font-bold text-gray-400">Current capital</label><span
+                                        id="sandbox-capital-val" class="font-bold text-white">50 Million</span></div>
+                                <input type="range" id="sandbox-capital" min="0" max="1000" step="10" value="50"
+                                    class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-white/20">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <div class="flex justify-between mb-3"><label
+                                        class="text-[15px] font-bold text-gray-400">Save / Month</label><span
+                                        id="sandbox-savings-val" class="font-bold text-white">+5 Mil /. Month</span></div><input
+                                    type="range" id="sandbox-savings" min="0" max="100" step="1" value="5"
+                                    class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-white/20">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <div class="flex justify-between mb-3"><label
+                                        class="text-[15px] font-bold text-gray-400">Projected time</label><span
+                                        id="sandbox-years-val" class="font-bold text-white">10 Years</span></div><input
+                                    type="range" id="sandbox-years" min="1" max="10" step="1" value="10"
+                                    class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-white/20">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <div class="flex justify-between mb-3"><label
+                                        class="text-[15px] font-bold text-gray-400">Savings Interest</label><span
+                                        id="sandbox-bank-rate-val" class="font-bold text-white">5.5% / Year</span></div>
+                                <input type="range" id="sandbox-bank-rate" min="1" max="12" step="0.5" value="5.5"
+                                    class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-white/20">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <div class="flex justify-between mb-3"><label
+                                        class="text-[15px] font-bold text-gray-400">Business Profit</label><span
+                                        id="sandbox-invest-rate-val" class="font-bold text-white">12.0% / Year</span>
+                                </div><input type="range" id="sandbox-invest-rate" min="3" max="30" step="0.5"
+                                    value="12.0"
+                                    class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-white/20">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <div class="flex justify-between mb-3"><label
+                                        class="text-[15px] font-bold text-[#FFAA80]">Inflation Rate</label><span
+                                        id="sandbox-inflation-val" class="font-bold text-white">4.0% / Year</span></div>
+                                <input type="range" id="sandbox-inflation" min="0" max="15" step="0.5" value="4.0"
+                                    class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-white/20">
+                            </div>
+                        </div>
+                    </div>
+                    <button id="reset-test-btn"
+                        class="w-full py-4 mt-4 bg-white/10 text-white rounded-xl font-bold hover:bg-white/20 transition-colors border border-white/20 backdrop-blur-md">
+                        SET DEFAULT </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="transaction-modal"
+        class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
+        <div class="glass-card bg-[#132419]/90 border border-white/20 p-8 rounded-3xl shadow-xl w-[400px]">
+            <h3 class="text-xl font-bold mb-6 text-white">Add new transaction</h3>
+            <form id="transaction-form" class="space-y-4">
+                <div><label class="block text-sm font-bold text-gray-300 mb-1">Amount</label><input type="number"
+                        id="trans-amount" class="w-full border border-white/20 bg-white/5 text-white p-2 rounded-lg"
+                        required></div>
+                <div><label class="block text-sm font-bold text-gray-300 mb-1">Description</label><input type="text"
+                        id="trans-desc" class="w-full border border-white/20 bg-white/5 text-white p-2 rounded-lg"
+                        required></div>
+                <div><label class="block text-sm font-bold text-gray-300 mb-1">Date</label><input type="date"
+                        id="trans-date"
+                        class="w-full border border-white/20 bg-white/5 text-white p-2 rounded-lg style-date" required>
+                </div>
+                <div><label class="block text-sm font-bold text-gray-300 mb-1">Category</label><select
+                        id="trans-category" class="w-full border border-white/20 bg-white/5 text-white p-2 rounded-lg"
+                        required></select></div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeModal()"
+                        class="px-4 py-2 text-gray-300 font-bold hover:text-white">Cancel</button>
+                    <button type="submit"
+                        class="bg-emerald-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-emerald-700">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts/sandbox.js"></script>
+    <script src="scripts/sound-helper.js"></script>
+    <script src="scripts/components.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/templatemo-glass-admin-script.js"></script>
+</body>
+
+</html>
