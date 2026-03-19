@@ -85,7 +85,15 @@ async function handleForgotPassword() {
         forgotBtn.innerText = "Send Recovery Request";
     }
 }
-
+// HÀM QUAY LẠI Ô ĐĂNG NHẬP
+function showLogin() {
+    document.getElementById('login-box').classList.remove('hidden');
+    document.getElementById('register-box').classList.add('hidden');
+    document.getElementById('forgot-box').classList.add('hidden');
+    
+    document.getElementById('auth-title').innerText = "Welcome back!";
+    document.getElementById('auth-subtitle').innerText = "Log in to Finance Checker";
+}
 // ==========================================
 // 3. XỬ LÝ ĐĂNG KÝ
 // ==========================================
