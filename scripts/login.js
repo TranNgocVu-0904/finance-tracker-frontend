@@ -94,6 +94,10 @@ function showLogin() {
     document.getElementById('auth-title').innerText = "Welcome back!";
     document.getElementById('auth-subtitle').innerText = "Log in to Finance Checker";
 }
+function showForgot() {
+    document.getElementById('login-box').classList.add('hidden');
+    document.getElementById('forgot-box').classList.remove('hidden');
+}
 // ==========================================
 // 3. XỬ LÝ ĐĂNG KÝ
 // ==========================================

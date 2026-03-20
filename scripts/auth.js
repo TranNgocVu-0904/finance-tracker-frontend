@@ -1,6 +1,6 @@
 // Sau này chỉ cần sửa đúng 1 dòng này là xong
 const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-    ? 'http://127.0.0.1:8080/api/v1' 
+    ? 'http://127.0.0.1:8081' 
     : 'https://finance-tracker-backend-qb26.onrender.com'; // Địa chỉ server thật sau này
     
 function toggleAuth() {
