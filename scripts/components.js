@@ -1,4 +1,7 @@
-// 1. Chứa toàn bộ giao diện của Modal vào một biến
+// ==========================================
+// 1. MODAL HTML TEMPLATES
+// ==========================================
+
 const creditsModalHTML = `
     <div id="credits-modal" onclick="if(event.target === this) closeCreditsModal()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
         <div class="glass-card bg-[#132419]/95 border border-white/20 p-8 rounded-3xl shadow-xl w-[450px] max-w-[90vw]">
@@ -24,6 +27,23 @@ const creditsModalHTML = `
                     </div>
                     <a href="https://www.chartjs.org/" target="_blank" class="text-[#9EDDFF] hover:text-white text-sm font-bold transition">Chart.js</a>
                 </div>
+                <div class="flex justify-between items-center pb-3 border-b border-white/10">
+                    <div>
+                        <p class="text-white font-medium text-sm">HTML and CSS Template</p>
+                        <p class="text-xs text-gray-400">Template by Templatemo.com"</p>
+                    </div>
+                    <a href="https://templatemo.com" target="_blank" class="text-[#9EDDFF] hover:text-white text-sm font-bold transition">TemplateMo</a>
+                </div>
+
+                <div class="flex justify-between items-center pb-3 border-b border-white/10">
+                    <div>
+                        <p class="text-white font-medium text-sm">Animated Icons</p>
+                        <p class="text-xs text-gray-400">Icons by Flaticon.com</p>
+                    </div>
+                    <a href="https://www.flaticon.com/free-animated-icons/business-and-finance" class="text-[#9EDDFF] hover:text-white text-sm font-bold transition">Flaticon</a>
+                </div>
+
+                <a href="https://www.flaticon.com/free-animated-icons/business-and-finance"></a>
 
             </div>
 
@@ -56,16 +76,24 @@ const confirmModalHTML = `
     </div>
 `;
 
+// ==========================================
+// 2. DOM INITIALIZATION
+// ==========================================
+
+// Dynamically inject the modals and toast container into the DOM upon initialization
 document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML('beforeend', confirmModalHTML);
-});
-
-// 2. Tự động "bơm" cái Modal này vào cuối thẻ <body>
-document.addEventListener("DOMContentLoaded", function() {
     document.body.insertAdjacentHTML('beforeend', creditsModalHTML);
+
+    const container = document.createElement('div');
+    container.id = 'toast-container';
+    document.body.appendChild(container);
 });
 
-// 3. Các hàm đóng/mở
+// ==========================================
+// 3. MODAL TOGGLE FUNCTIONS
+// ==========================================
+
 function openCreditsModal() {
     document.getElementById('credits-modal').classList.remove('hidden');
 }
@@ -73,23 +101,21 @@ function openCreditsModal() {
 function closeCreditsModal() {
     document.getElementById('credits-modal').classList.add('hidden');
 }
-// Tự động tạo container chứa toast khi trang load
-document.addEventListener("DOMContentLoaded", function() {
-    const container = document.createElement('div');
-    container.id = 'toast-container';
-    document.body.appendChild(container);
-});
+
+// ==========================================
+// 4. UI UTILITY FUNCTIONS
+// ==========================================
 
 /**
- * Hiển thị thông báo đẹp mắt
- * @param {string} message - Nội dung thông báo
- * @param {string} type - 'success', 'error', hoặc 'info'
+ * Displays a styled toast notification with a sliding exit animation.
+ * * @param {string} message - The notification payload to display.
+ * @param {string} type - The contextual type of the notification ('success', 'error', or 'info').
  */
 function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
     
-    // Logic chọn icon GIF của bạn (đã dọn dẹp lại cho đồng bộ dấu nháy)
+    // Select the corresponding GIF icon based on the contextual type
     const iconHTML = type === 'success' 
         ? `<img src="assets/gif/right.gif" alt="Success" class="w-8 h-8 object-contain">` 
         : (type === 'error' 
@@ -106,27 +132,34 @@ function showToast(message, type = 'success') {
         </div>
     `;
 
-    // Click để đóng nhanh
+    // Allow premature dismissal via click event
     toast.onclick = () => toast.remove();
 
     container.appendChild(toast);
 
-    // Tự động xóa sau 4 giây
+    // Automatically slide out after 4 seconds
     setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(20px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
+
+    // 1. Add a CSS class containing the slide-out effect
+    toast.classList.add('toast-out-anim');
+
+    // 2. Wait exactly 400ms (matching the 0.4s animation time in CSS) before deleting the HTML
+    setTimeout(() => toast.remove(), 400);
+
     }, 4000);
-    
-    // Nếu có sound-helper, phát âm thanh báo hiệu luôn
+
+    // If there is a sound helper, play a notification sound
     if (typeof playAppSound === 'function') {
-        playAppSound(type === 'error' ? 'delete' : 'notify');
+
+    playAppSound(type === 'notify');
+
     }
+
 }
 /**
- * Thay thế confirm() mặc định
- * @param {string} message - Câu hỏi cần xác nhận
+ * An asynchronous custom confirmation dialog replacing the native window.confirm() method.
+ * * @param {string} message - The prompt text requesting user verification.
+ * @returns {Promise<boolean>} A promise resolving to true if proceeded, or false if canceled.
  */
 function showConfirm(message) {
     return new Promise((resolve) => {
@@ -138,20 +171,25 @@ function showConfirm(message) {
         msgEl.innerText = message;
         modal.classList.remove('hidden');
 
-        // Phát âm thanh cảnh báo nếu có
+        // Trigger notification sound if the utility is present
         if (typeof playAppSound === 'function') playAppSound('notify');
 
         const close = (result) => {
             modal.classList.add('hidden');
+            
+            // Cleanup event listeners to prevent memory leaks
             btnCancel.onclick = null;
             btnProceed.onclick = null;
+            
             resolve(result);
         };
 
         btnCancel.onclick = () => close(false);
         btnProceed.onclick = () => close(true);
         
-        // Bấm ra ngoài cũng là Cancel
-        modal.onclick = (e) => { if(e.target === modal) close(false); };
+        // Dismiss the modal and resolve to false when clicking the backdrop layer
+        modal.onclick = (e) => { 
+            if (e.target === modal) close(false); 
+        };
     });
 }

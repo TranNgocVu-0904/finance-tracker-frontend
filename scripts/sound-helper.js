@@ -1,5 +1,5 @@
- function playAppSound(type) {
-    // Luôn mặc định là Bật nếu user chưa từng tắt (!== 'false')
+function playAppSound(type) {
+    // Default to 'Enabled' unless the user has explicitly opted out ('false').
     const isSoundEnabled = localStorage.getItem('app_sound') !== 'false';
     if (!isSoundEnabled) return;
 

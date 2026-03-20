@@ -1,27 +1,37 @@
+/**
+ * ==========================================
+ * USER SETTINGS & PROFILE CONTROLLER
+ * Manages profile updates, security credentials, 
+ * UI persistence, and notification preferences.
+ * ==========================================
+ */
+
 document.addEventListener("DOMContentLoaded", function() {
     const token = localStorage.getItem('jwt_token');
     
-    // BẢO MẬT: Nếu không có token, đá về trang đăng nhập
+    // SECURITY GUARD: Redirect to authentication gateway if the session token is missing
     if (!token) {
         window.location.href = 'login.html';
         return;
     }
     
-    // 1. Load thông tin người dùng ngay khi vào trang
+    // Initialize user data and form states upon document readiness
     fetchProfileData(token);
     loadAppearanceToForm();
     loadNotificationToForm();
 
-    // 2. Xử lý chuyển Tab (Profile, Security, etc.)
+    // TAB NAVIGATION LOGIC: Handles transitions between Profile, Security, and Settings modules
     const navLinks = document.querySelectorAll('.settings-nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const tabId = this.getAttribute('data-tab');
             
+            // Update active navigational state
             navLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
 
+            // Toggle content visibility for the selected fragment
             document.querySelectorAll('.settings-tab-content').forEach(content => {
                 content.classList.remove('active');
             });
@@ -30,7 +40,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// HÀM LẤY DỮ LIỆU THẬT TỪ DATABASE
+/**
+ * Retrieves the current user's comprehensive profile data from the backend.
+ * Synchronizes input fields and calculates account duration metrics.
+ */
 async function fetchProfileData(token) {
     try {
         const response = await fetch(`${API_BASE_URL}/users/me`, {
@@ -40,84 +53,77 @@ async function fetchProfileData(token) {
         if (response.ok) {
             const user = await response.json();
             
-            // Đổ dữ liệu vào các ô input (Dùng chuỗi rỗng "" nếu DB chưa có dữ liệu)
+            // Populate input fields with retrieved data; default to empty strings if null
             document.getElementById('first-name').value = user.firstName || "";
             document.getElementById('last-name').value = user.lastName || "";
             document.getElementById('display-email').value = user.email || "";
             document.getElementById('phone-number').value = user.phone || "";
             document.getElementById('bio-textarea').value = user.bio || "";
             
-            // Cập nhật Header Profile
+            // Synchronize header profile metadata
             document.getElementById('profile-name').innerText = user.name || "User";
-            document.getElementById('profile-email').innerText = user.email || "No email yet";
+            document.getElementById('profile-email').innerText = user.email || "No email associated";
             
-            // Tạo chữ cái viết tắt cho Avatar (Ví dụ: Trần Ngọc Vũ -> TV)
+            // AVATAR GENERATION: Construct initials from the user's full name (e.g., Tran Ngoc Vu -> TV)
             if (user.name) {
                 const nameParts = user.name.split(" ");
                 let initials = nameParts[0].charAt(0);
                 if (nameParts.length > 1) {
                     initials += nameParts[nameParts.length - 1].charAt(0);
                 }
-                // Thay thế cả những node text bên trong để không làm mất icon Edit SVG
                 const avatarDiv = document.getElementById('profile-avatar-text');
+                // Update only the text node to preserve any sibling SVG icons
                 avatarDiv.childNodes[0].nodeValue = initials.toUpperCase() + " ";
             }
             
-            // THÊM ĐOẠN NÀY VÀO ĐỂ HIỂN THỊ NGÀY ĐĂNG KÝ
+            // ACCOUNT LONGEVITY METRICS
             if (user.createdAt) {
-                const date = new Date(user.createdAt); // Biến tên là "date"
-                const formattedDate = date.toLocaleDateString('vi-VN', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
+                const registrationDate = new Date(user.createdAt);
+                const formattedDate = registrationDate.toLocaleDateString('en-US', {
+                    day: '2-digit', month: '2-digit', year: 'numeric'
                 });
                 
                 const regDateEl = document.getElementById('registration-date');
-                if (regDateEl) {
-                    regDateEl.innerText = formattedDate;
-                }
-                // ==========================================
-                // TÍNH TOÁN SỐ NGÀY ĐỒNG HÀNH
-                // ==========================================
+                if (regDateEl) regDateEl.innerText = formattedDate;
+
+                // CHRONOLOGICAL CALCULATION: Determine total days since account creation
                 const today = new Date();
-                
-                // Đã sửa regDate thành date cho khớp với khai báo ở trên
-                const diffTime = today.getTime() - date.getTime(); 
-                
-                // Quy đổi từ mili-giây ra số ngày (làm tròn lên)
+                const diffTime = today.getTime() - registrationDate.getTime(); 
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
                 
                 const durationEl = document.getElementById('usage-duration');
                 if (durationEl) {
                     if (diffDays <= 1) {
-                        durationEl.innerHTML = `<img src="assets/gif/hurray.gif" alt="Hurray icon" class="w-8 h-8 inline-block mr-2 pb-1 object-contain">New member joined today`;
+                        durationEl.innerHTML = `<img src="assets/gif/hurray.gif" alt="Join icon" class="w-8 h-8 inline-block mr-2 pb-1 object-contain">New member joined today`;
                     } else {
-                        durationEl.innerHTML = `<img src="assets/gif/fire.gif" alt="Fire icon" class="w-8 h-8 inline-block mr-2 pb-1 object-contain">We have been together: <span class="text-white font-bold">${diffDays} days</span>`;
+                        durationEl.innerHTML = `<img src="assets/gif/fire.gif" alt="Loyalty icon" class="w-8 h-8 inline-block mr-2 pb-1 object-contain">Partnership duration: <span class="text-white font-bold">${diffDays} days</span>`;
                     }
                 }
             }
         
         } else {
-            // Nếu Token hết hạn hoặc không hợp lệ
+            // Invalidate session upon authentication failure (e.g., expired token)
             localStorage.removeItem('jwt_token');
             window.location.href = 'login.html';
         }
     } catch (error) { 
-        console.error("Profile loading error:", error); 
+        console.error("Critical error during profile synchronization:", error); 
     }
 }
 
+/**
+ * Persists profile modifications using a Partial Update strategy.
+ */
 async function saveProfileChanges() {
     const token = localStorage.getItem('jwt_token');
     const saveBtn = document.querySelector('button[onclick="saveProfileChanges()"]');
     
     const originalText = saveBtn.innerText;
-    saveBtn.innerText = "Saving...";
+    saveBtn.innerText = "Persisting Data...";
     saveBtn.disabled = true;
 
-    // LOGIC MỚI: Chỉ đưa vào JSON những trường có giá trị (Partial Update)
+    // Construct update payload containing only non-empty fields
     const updatedData = {};
-    
     const firstName = document.getElementById('first-name').value.trim();
     if (firstName) updatedData.firstName = firstName;
     
@@ -137,43 +143,46 @@ async function saveProfileChanges() {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json' 
             },
-            // Chỉ gửi những data có thay đổi
             body: JSON.stringify(updatedData) 
         });
 
         if (response.ok) {
-            alert("Update successful!");
-            location.reload(); 
+            showToast("Profile successfully updated!", "success");
+            setTimeout(() => location.reload(), 1000); 
         } else {
-            alert("Update failed, please try again.");
+            showToast("Update failed. Please verify the input data.", "error");
         }
     } catch (error) { 
-        console.error("Connection error:", error); 
-        alert("Unable to load the data at this time. Please try again later!");
+        console.error("Connection failure during profile update:", error); 
+        showToast("Unable to communicate with the server. Please try again later.", "error");
     } finally {
         saveBtn.innerText = originalText;
         saveBtn.disabled = false;
     }
 }
-// HÀM ĐỔI MẬT KHẨU
+
+/**
+ * Handles security credential rotation (Password Change).
+ * Enforces strict client-side validation before dispatching to the server.
+ */
 async function changePassword() {
     const oldPassword = document.getElementById('old-password').value;
     const newPassword = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
     
-    // 1. Kiểm tra Validate ở Frontend cho nhanh
+    // Step 1: Client-Side Validation
     if (!oldPassword || !newPassword || !confirmPassword) {
-        alert("Please fill in all fields!");
+        showToast("Please populate all authentication fields.", "info");
         return;
     }
     
     if (newPassword !== confirmPassword) {
-        alert("The new password doesn't match!");
+        showToast("The new passwords do not match.", "error");
         return;
     }
 
     if (newPassword.length < 6) {
-        alert("The new password must have at least 6 characters!");
+        showToast("The new password must contain at least 6 characters.", "info");
         return;
     }
 
@@ -181,7 +190,7 @@ async function changePassword() {
     const btn = document.getElementById('btn-change-password');
     const originalText = btn.innerText;
     
-    btn.innerText = "Processing...";
+    btn.innerText = "Authorizing Change...";
     btn.disabled = true;
 
     try {
@@ -191,28 +200,24 @@ async function changePassword() {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json' 
             },
-            body: JSON.stringify({
-                oldPassword: oldPassword,
-                newPassword: newPassword,
-                confirmPassword: confirmPassword
-            })
+            body: JSON.stringify({ oldPassword, newPassword, confirmPassword })
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            alert(data.message || "Password changed successfully! Please log in again.");
-            // Xóa token và bắt đăng nhập lại để đảm bảo an toàn
+            showToast("Security credentials updated. Re-authentication required.", "success");
+            // Terminate session to force a fresh login with the new credentials
             localStorage.removeItem('jwt_token');
-            window.location.href = 'login.html';
+            setTimeout(() => window.location.href = 'login.html', 2000);
         } else {
-            alert("Lỗi: " + (data.message || "Unable to change password"));
+            showToast(data.message || "Credential update failed.", "error");
         }
     } catch (error) {
-        console.error("Error:", error);
-        alert("Server connection error");
+        console.error("Password rotation error:", error);
+        showToast("Server connection failure.", "error");
     } finally {
-        // Reset lại form và nút
+        // Clear sensitive inputs post-attempt
         document.getElementById('old-password').value = '';
         document.getElementById('new-password').value = '';
         document.getElementById('confirm-password').value = '';
@@ -220,28 +225,25 @@ async function changePassword() {
         btn.disabled = false;
     }
 }
-// HÀM LƯU CÀI ĐẶT GIAO DIỆN
+
+/**
+ * PERSISTENCE LAYER: Appearance & Personalization
+ */
 function saveAppearanceSettings() {
     const glass = document.getElementById('glass-toggle').checked;
     const orbs = document.getElementById('orbs-toggle').checked;
 
-    // Ép "chết" 2 giá trị này trong bộ nhớ luôn, không cần đọc từ giao diện
+    // Persist UI states to LocalStorage
     localStorage.setItem('app_theme', 'dark');
     localStorage.setItem('app_color', 'emerald');
-    
-    // Lưu trạng thái 2 nút gạt
     localStorage.setItem('app_glass', glass);
     localStorage.setItem('app_orbs', orbs);
 
-    alert("Theme changes have been changed!");
-    
-    // Áp dụng ngay lập tức
-    applyGlobalAppearance();
+    showToast("UI preferences have been localized.", "success");
+    applyGlobalAppearance(); // Immediate re-rendering of the UI
 }
 
-// HÀM HIỂN THỊ LẠI CÀI ĐẶT LÊN FORM SETTINGS
 function loadAppearanceToForm() {
-    // CHỈ cập nhật 2 nút gạt này
     if(localStorage.getItem('app_glass') !== null) {
         document.getElementById('glass-toggle').checked = localStorage.getItem('app_glass') === 'true';
     }
@@ -250,52 +252,45 @@ function loadAppearanceToForm() {
     }
 }
 
-// HÀM LƯU CÀI ĐẶT THÔNG BÁO (Bị thiếu)
+/**
+ * PERSISTENCE LAYER: Notifications & Auditory Feedback
+ */
 function saveNotificationSettings() {
     const push = document.getElementById('push-toggle').checked;
     const sound = document.getElementById('sound-toggle').checked;
 
-    // Lưu trạng thái vào bộ nhớ dùng chung
     localStorage.setItem('app_push', push);
     localStorage.setItem('app_sound', sound);
 
-    // Báo cáo người dùng
-    alert("Notification settings have been saved!");
-    
-    // Phát âm thanh mặc định để test loa
-    playAppSound('success'); 
+    showToast("Notification settings archived.", "success");
+    if (typeof playAppSound === 'function') playAppSound('success'); 
 }
 
 function togglePushNotification() {
     const isPushEnabled = document.getElementById('push-toggle').checked;
-    
     if (isPushEnabled) {
-        // 1. NGHE THỬ TRỰC TIẾP: Phát ngay tiếng Pop bằng Audio (bỏ qua check localStorage)
+        // Trigger auditory test feedback
         const audio = new Audio('assets/sounds/dragon-studio-new-notification-3-398649.mp3');
-        audio.play().catch(e => console.log(e));
+        audio.play().catch(e => console.warn("Audio playback inhibited:", e));
         
-        // 2. Việc xin quyền và hiện Popup cứ để nó chạy chậm ở phía sau
+        // Handle Browser Notification Permissions
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
-                new Notification("Finance Tracker", { body: "Notifications are turned on!" });
+                new Notification("Finance Tracker", { body: "System alerts are now enabled." });
             }
         });
     }
 }
 
 function toggleIncomeNotification(){
-    const isCheckEnabled = document.getElementById('sound-toggle').checked;
-
-    if (isCheckEnabled) {
-        // Dùng thẳng Audio để nghe thử tức thì, bỏ qua việc kiểm tra localStorage
+    const isSoundEnabled = document.getElementById('sound-toggle').checked;
+    if (isSoundEnabled) {
         const audio = new Audio('assets/sounds/freesound_community-news-ting-6832.mp3');
-        audio.play().catch(e => console.log(e));
+        audio.play().catch(e => console.warn("Audio playback inhibited:", e));
     }
 }
 
-// HÀM HIỂN THỊ CÀI ĐẶT THÔNG BÁO LÊN FORM
 function loadNotificationToForm() {
-    // Nếu chưa có dữ liệu (!== 'false') thì checkbox sẽ tự động được checked
     document.getElementById('sound-toggle').checked = localStorage.getItem('app_sound') !== 'false';
     document.getElementById('push-toggle').checked = localStorage.getItem('app_push') !== 'false';
 }

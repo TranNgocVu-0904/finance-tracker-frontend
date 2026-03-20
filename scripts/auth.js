@@ -1,77 +1,105 @@
-// Sau này chỉ cần sửa đúng 1 dòng này là xong
+/**
+ * ==========================================
+ * GLOBAL CONFIGURATION & SECURITY GUARD
+ * Acts as the application's entry point for environment 
+ * switching, authentication, and UI persistence.
+ * ==========================================
+ */
+
+// 1. DYNAMIC API BASE URL CONFIGURATION
+// Automatically switches between local development and production environments.
 const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
     ? 'http://127.0.0.1:8081' 
-    : 'https://finance-tracker-backend-9qsm.onrender.com'; // Địa chỉ server thật sau này
-    
-function toggleAuth() {
-    document.getElementById('login-box').classList.toggle('hidden');
-    document.getElementById('register-box').classList.toggle('hidden');
-}
+    : 'https://finance-tracker-backend-9qsm.onrender.com';
+
+/**
+ * Validates the user's authentication state and manages routing permissions.
+ * Prevents unauthorized access to protected routes and redirects authenticated 
+ * users away from login pages.
+ */
 function checkSecurityGuard() {
     const token = localStorage.getItem('jwt_token');
     const currentPath = window.location.pathname;
     const isAuthPage = currentPath.includes('login.html');
 
-    // 1. Kiểm tra trạng thái Token (Còn hạn hay đã hết hạn/không có)
+    // Step 1: Token Lifecycle Validation (JWT Payload Decoding)
     let isTokenExpired = true;
     if (token) {
         try {
+            // Extract and decode the JWT payload to verify the expiration timestamp (exp)
             const payload = JSON.parse(atob(token.split('.')[1]));
             isTokenExpired = payload.exp < Date.now() / 1000;
         } catch (e) {
-            isTokenExpired = true; // Token lỗi định dạng thì coi như hết hạn
+            console.error("Invalid token format detected.");
+            isTokenExpired = true; 
         }
     }
 
-    // 2. LOGIC ĐIỀU HƯỚNG
+    // Step 2: Routing Logic Enforcement
     
-    // TH1: Token hết hạn/Không có VÀ đang ở trang nội bộ -> Đuổi về Login
+    // CASE 1: Token is expired or missing while accessing protected resources.
     if (isTokenExpired && !isAuthPage) {
-        localStorage.removeItem('jwt_token'); // Dọn dẹp cho sạch
+        localStorage.removeItem('jwt_token'); // Purge corrupted or expired credentials
         window.location.href = 'login.html';
     } 
-    // TH2: Token CÒN HẠN VÀ lỡ tay vào trang Login -> Mời vào Dashboard (Cái này bạn đang thiếu nè!)
+    // CASE 2: Active session detected while on the authentication page.
+    // Automatically reroutes to the dashboard to prevent redundant logins.
     else if (!isTokenExpired && isAuthPage) {
         window.location.href = 'index.html';
     }
 }
 
-// Chạy ngay khi thẻ <head> gọi file này
+// Immediate execution upon script loading to secure the route before rendering.
 checkSecurityGuard();
 
-// Hàm Đăng xuất dùng chung cho mọi trang
+/**
+ * Standardized global logout procedure.
+ * Clears local session storage and redirects to the authentication gateway.
+ */
 function logout() {
     localStorage.removeItem('jwt_token');
     window.location.href = 'login.html';
 }
-// Hàm này sẽ đọc localStorage và thay đổi CSS/HTML
+
+/**
+ * Toggles the visibility of authentication boxes (Login vs Register).
+ */
+function toggleAuth() {
+    document.getElementById('login-box').classList.toggle('hidden');
+    document.getElementById('register-box').classList.toggle('hidden');
+}
+
+/**
+ * Persists and applies global UI appearance settings based on user preferences stored in localStorage.
+ * Manages background effects (Orbs) and Glassmorphism styling.
+ */
 function applyGlobalAppearance() {
-    // 1. Xử lý bật/tắt Quả cầu nền (Orbs)
+    // 1. Background Ambient Effects (Orbs) Configuration
     const showOrbs = localStorage.getItem('app_orbs');
     const orbsElements = document.querySelectorAll('.orb');
+    
     if (showOrbs === 'false') {
         orbsElements.forEach(el => el.style.display = 'none');
     } else {
         orbsElements.forEach(el => el.style.display = 'block');
     }
 
-    // 2. Xử lý bật/tắt hiệu ứng kính mờ (Glassmorphism)
+    // 2. Glassmorphism Visual Styles (Transparency & Backdrop Filters)
     const enableGlass = localStorage.getItem('app_glass');
     const glassCards = document.querySelectorAll('.glass-card, .sidebar, .navbar');
+    
     if (enableGlass === 'false') {
         glassCards.forEach(el => {
             el.style.backdropFilter = 'none';
-            el.style.backgroundColor = 'rgba(15, 23, 42, 0.95)'; // Màu nền đặc không xuyên thấu
+            el.style.backgroundColor = 'rgba(15, 23, 42, 0.95)'; // Fallback to high-opacity solid background
         });
     } else {
         glassCards.forEach(el => {
-            el.style.backdropFilter = ''; // Trả về CSS mặc định
+            el.style.backdropFilter = ''; // Revert to stylesheet default (blur effect)
             el.style.backgroundColor = '';
         });
     }
-
-    // (Phase 2: Chế độ Light Mode và Đổi màu nút bấm sẽ cần cấu hình CSS Variables sâu hơn trong Tailwind)
 }
 
-// Lắng nghe sự kiện: Ngay khi trang vừa load xong là áp dụng giao diện liền
+// Apply appearance settings immediately after the DOM is fully constructed.
 document.addEventListener("DOMContentLoaded", applyGlobalAppearance);

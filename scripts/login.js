@@ -1,5 +1,5 @@
 // ==========================================
-// 1. LOGIN HÀM CHÍNH
+// 1. PRIMARY AUTHENTICATION HANDLER
 // ==========================================
 async function login() {
     const emailInput = document.getElementById('email').value;
@@ -8,7 +8,7 @@ async function login() {
     const passwordEl = document.getElementById('password');
     const passwordError = document.getElementById('password-error');
 
-    // Reset UI state
+    // Reset UI validation states
     passwordError.classList.add('hidden');
     passwordEl.classList.remove('border-[#ef4444]', 'focus:border-[#ef4444]');
 
@@ -21,28 +21,33 @@ async function login() {
 
         if (response.ok) {
             const data = await response.json();
+            
+            // Persist the JWT token in local storage for session management
             localStorage.setItem('jwt_token', data.token); 
             
-            showToast("Login successful! Welcome back.", "success");
+            showToast("Authentication successful. Welcome back.", "success");
             setTimeout(() => { window.location.href = 'index.html'; }, 800); 
-        } else {
+        } 
+        else {
             const errorData = await response.json();
-            // Cập nhật thông báo lỗi ngay dưới ô input
+            
+            // Update inline validation error messages
             passwordError.classList.remove('hidden');
-            passwordError.querySelector('span').innerText = errorData.message || "Invalid email or password.";
+            passwordError.querySelector('span').innerText = errorData.message || "Invalid email or password";
             passwordEl.classList.add('border-[#ef4444]', 'focus:border-[#ef4444]');
             
-            // Hiện Toast báo lỗi
-            showToast(errorData.message || "Invalid credentials.", "error");
+            // Trigger global error notification
+            showToast(errorData.message || "Invalid credentials", "error");
         }
-    } catch (error) {
-        console.error("System error:", error);
-        showToast("Server connection error. Please try again later.", "error");
+    } 
+    catch (error) {
+        console.error("System error during authentication:", error);
+        showToast("Server connection error. Please try again later!!!", "error");
     }
 }
 
 // ==========================================
-// 2. XỬ LÝ QUÊN MẬT KHẨU
+// 2. PASSWORD RECOVERY HANDLER
 // ==========================================
 async function handleForgotPassword() {
     const email = document.getElementById('forgot-email').value;
@@ -50,11 +55,12 @@ async function handleForgotPassword() {
     const forgotMsg = document.getElementById('forgot-msg');
 
     if (!email) {
-        showToast("Please enter your email address.", "info");
+        showToast("Please provide a valid email address.", "info");
         return;
     }
 
-    forgotBtn.innerText = "Sending...";
+    // Disable the trigger button to prevent duplicate submissions
+    forgotBtn.innerText = "Processing...";
     forgotBtn.disabled = true;
 
     try {
@@ -70,37 +76,49 @@ async function handleForgotPassword() {
         if (response.ok) {
             forgotMsg.innerText = data.message;
             forgotMsg.className = "text-emerald-400 text-[13px] font-medium mt-2";
-            forgotBtn.innerText = "Sent Successfully";
-            showToast("Recovery email has been sent.", "success");
-        } else {
-            forgotMsg.innerText = data.message || "An error occurred.";
+            forgotBtn.innerText = "Recovery Email Sent";
+            showToast("A password recovery link has been dispatched", "success");
+        } 
+        else {
+            forgotMsg.innerText = data.message || "An error occurred during the request.";
             forgotMsg.className = "text-[#ef4444] text-[13px] font-medium mt-2";
             forgotBtn.innerText = "Send Recovery Request";
             forgotBtn.disabled = false;
-            showToast(data.message || "Could not process request.", "error");
+            showToast(data.message || "Unable to process the recovery request", "error");
         }
-    } catch (error) {
-        showToast("Connection failed. Please check your network.", "error");
+    } 
+    catch (error) {
+        showToast("Network failure. Please verify your connection", "error");
         forgotBtn.disabled = false;
         forgotBtn.innerText = "Send Recovery Request";
     }
 }
-// HÀM QUAY LẠI Ô ĐĂNG NHẬP
+
+// ==========================================
+// 3. UI STATE TRANSITIONS
+// ==========================================
+
+// Transitions the view back to the primary login interface
 function showLogin() {
     document.getElementById('login-box').classList.remove('hidden');
     document.getElementById('register-box').classList.add('hidden');
     document.getElementById('forgot-box').classList.add('hidden');
     
     document.getElementById('auth-title').innerText = "Welcome back!";
-    document.getElementById('auth-subtitle').innerText = "Log in to Finance Checker";
+    
+    document.getElementById('auth-subtitle').innerText = "Log in to Finance Tracker"; 
 }
+
+// Transitions the view to the password recovery interface
 function showForgot() {
     document.getElementById('login-box').classList.add('hidden');
     document.getElementById('forgot-box').classList.remove('hidden');
 }
+
 // ==========================================
-// 3. XỬ LÝ ĐĂNG KÝ
+// 4. USER REGISTRATION HANDLER
 // ==========================================
+
 async function handleRegister() {
     const name = document.getElementById('reg-name').value;
     const email = document.getElementById('reg-email').value;
@@ -109,33 +127,34 @@ async function handleRegister() {
     const regMessage = document.getElementById('reg-message');
     const registerBtn = document.querySelector('#register-box button');
 
+    // Reset validation message states
     regMessage.innerText = "";
     regMessage.className = "text-center mb-4 font-bold text-sm mt-2";
 
-    // Validations
+    // Pre-flight client-side validations
     if (!name || !email || !password || !confirmPassword) {
-        showToast("Please fill in all required fields.", "info");
-        regMessage.innerText = "Missing required information.";
+        showToast("Please fill all required fields", "info");
+        regMessage.innerText = "Missing required information";
         regMessage.classList.add('text-[#ef4444]');
         return;
     }
 
     if (password !== confirmPassword) {
-        showToast("Passwords do not match.", "error");
-        regMessage.innerText = "Confirm password does not match.";
+        showToast("The passwords provided do not match", "error");
+        regMessage.innerText = "Password mismatch";
         regMessage.classList.add('text-[#ef4444]');
         return;
     }
 
     if (password.length < 6) {
-        showToast("Password must be at least 6 characters.", "info");
-        regMessage.innerText = "Password too short.";
+        showToast("The password must contain a minimum of 6 characters", "info");
+        regMessage.innerText = "Insufficient password length";
         regMessage.classList.add('text-[#ef4444]');
         return;
     }
 
     const originalText = registerBtn.innerText;
-    registerBtn.innerText = "Processing...";
+    registerBtn.innerText = "Provisioning Account...";
     registerBtn.disabled = true;
 
     try {
@@ -146,26 +165,31 @@ async function handleRegister() {
         });
 
         if (response.ok) {
-            showToast("Registration successful!", "success");
-            regMessage.innerText = "Success! Redirecting to login...";
+
+            showToast("Account successfully provisioned!", "success");
+            regMessage.innerText = "Success! Rerouting to authentication gateway...";
             regMessage.classList.add('text-emerald-400');
             
             setTimeout(() => {
                 showLogin();
-                document.getElementById('email').value = email;
+                document.getElementById('email').value = email; // Auto-fill email for convenience
                 regMessage.innerText = ""; 
             }, 2000);
-        } else {
+        } 
+        else {
             const errorData = await response.json();
-            showToast(errorData.message || "Registration failed.", "error");
-            regMessage.innerText = errorData.message || "Registration failed.";
+            showToast(errorData.message || "Account provisioning failed", "error");
+            regMessage.innerText = errorData.message || "Registration failed";
             regMessage.classList.add('text-[#ef4444]');
         }
-    } catch (error) {
-        showToast("Could not connect to the server.", "error");
-        regMessage.innerText = "Connection error.";
+    } 
+    catch (error) {
+        showToast("Unable to establish server connection", "error");
+        regMessage.innerText = "Network connection error";
         regMessage.classList.add('text-[#ef4444]');
-    } finally {
+    } 
+    finally {
+        // Restore button state unconditionally
         registerBtn.innerText = originalText;
         registerBtn.disabled = false;
     }

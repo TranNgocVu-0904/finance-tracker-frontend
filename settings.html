@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Finance Tracker</title>
+
+    <link rel="icon" type="image/gif" href="assets/gif/wallet.gif">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
@@ -26,7 +28,7 @@
     <div id="app-layout" class="dashboard">
 
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
+            <div class="sidebar-header mb-8 mt-2">
                 <div class="flex items-center gap-3">
 
                     <div class="w-11 h-11 flex-shrink-0">
@@ -35,7 +37,6 @@
 
                     <div class="flex flex-col justify-center">
                         <span class="text-xl font-bold text-white whitespace-nowrap leading-tight">Finance Tracker</span>
-
                     </div>
 
                 </div>
@@ -196,14 +197,17 @@
                         <div class="settings-section">
                             <h3 class=" font-mono font-bold settings-section-title text-white mt-6">Personal profile</h3>
                             <div class="form-grid">
-                                <div class="form-group-settings">
-                                    <label>Last Name</label>
-                                    <input type="text" id="first-name" placeholder="Not updated yet">
-                                </div>
+
                                 <div class="form-group-settings">
                                     <label>First Name</label>
                                     <input type="text" id="last-name" placeholder="Not updated yet">
                                 </div>
+
+                                <div class="form-group-settings">
+                                    <label>Last Name</label>
+                                    <input type="text" id="first-name" placeholder="Not updated yet">
+                                </div>
+                                
                                 <div class="form-group-settings">
                                     <label>Email</label>
                                     <input type="email" id="display-email" disabled>
@@ -232,22 +236,22 @@
                             <div class="form-grid">
                                 <div class="form-group-settings full-width">
                                     <label>Current password</label>
-                                    <input type="password" id="old-password" placeholder="Nhập mật khẩu hiện tại">
+                                    <input type="password" id="old-password" placeholder="Enter your current password">
                                 </div>
                                 <div class="form-group-settings">
                                     <label>New password</label>
-                                    <input type="password" id="new-password" placeholder="Nhập mật khẩu mới">
+                                    <input type="password" id="new-password" placeholder="Enter your new password">
                                 </div>
                                 <div class="form-group-settings">
                                     <label>Confirm new password</label>
-                                    <input type="password" id="confirm-password" placeholder="Nhập lại mật khẩu mới">
+                                    <input type="password" id="confirm-password" placeholder="Re-Enter your current password">
                                 </div>
                             </div>
                         </div>
 
                         <div class="settings-section">
                             <h3 class="font-mono font-bold settings-section-title text-white mt-6">Two-Factor Authentication (2FA)<span
-                                    class="font-mono font-bold text-emerald-400 text-sm ml-2 italic">(Coming Soon)</span></h3>
+                                    class="font-mono font-bold text-emerald-400 text-sm ml-2 italic">(Comming Soon)</span></h3>
 
                             <div style="opacity: 0.5; pointer-events: none;">
                                 <div class="settings-row">
@@ -334,7 +338,7 @@
 
                         <div class="btn-group">
                             <button class="btn btn-primary" style="width: auto;"
-                                onclick="saveNotificationSettings()">Save change</button>
+                                onclick="saveNotificationSettings()">Save changes</button>
                         </div>
                     </div>
 

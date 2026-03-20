@@ -1,106 +1,121 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Finance Tracker</title>
+    <title>Sign Up - Finance Tracker</title>
+
+    <link rel="icon" type="image/gif" href="assets/gif/wallet.gif">
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="templatemo-glass-admin-style.css">
-    <script src="scripts/auth.js"></script>
     
+    <script src="scripts/auth.js"></script>
+    <link rel="icon" type="image/gif" href="assets/gif/wallet.gif">
 </head>
 <body>
+
     <div class="background"></div>
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
 
     <div class="login-page">
+
         <div class="login-container">
+
             <div class="login-card">
-    <div class="login-header">
-        <img src="assets/gif/coin.gif" alt="Finance Tracker Logo" class="w-16 h-16 mx-auto mb-4 object-contain drop-shadow-lg">
-        <h1 id="auth-title" class="login-title font-mono font-bold uppercase text-white items-center">Welcome back!</h1>
-        <p id="auth-subtitle" class="login-subtitle">Log in to Finance Checker</p>
-    </div>
 
-    <div id="login-box" class="animate-fade">
-        <div class="form-group">
-            <label class="form-label" for="email">Email</label>
-            <input type="email" id="email" class="form-input" placeholder="Enter your email" value="vu.final@vgu.edu.vn">
-        </div>
-        
-        <div class="form-group">
-            <label class="form-label" for="password">Password</label>
-            <input class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-emerald-400 transition-colors"  id="password" type="password" placeholder="Enter your password" value="123456">
-            
-            <div class=" login-footer text-right hover:underline mt-3">
-                <a href="#" onclick="showForgot()">Forgot password?</a>
+                <div class="login-header">
+                    <img src="assets/gif/coin.gif" alt="Finance Tracker Logo" class="w-16 h-16 mx-auto mb-4 object-contain drop-shadow-lg">
+                    <h1 id="auth-title" class="login-title font-mono font-bold uppercase text-white">Welcome back!</h1>
+                    <p id="auth-subtitle" class="login-subtitle">Log in to Finance Tracker</p>
+                </div>
+
+                <div id="login-box" class="animate-fade">
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password">
+                        
+                        <div class="login-footer text-right hover:underline mt-3">
+                            <a href="#" onclick="showForgot()">Forgot password?</a>
+                        </div>
+
+                        <p id="password-error" class="hidden text-[#ef4444] text-[13px] font-medium mt-1.5 flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Authentication failed. Please verify your credentials.</span>
+                        </p>
+
+                    </div>
+                    
+                    <button id="login-btn" onclick="login()" class="btn btn-primary w-full mb-4">
+                        Sign In
+                    </button>
+                    
+                    <p class="login-footer">
+                        New user? <a href="#" onclick="toggleAuth()" class="hover:underline">Create an account</a>
+                    </p>
+                </div>
+
+                <div id="forgot-box" class="hidden animate-fade">
+
+                    <div class="form-group">
+                        <label class="form-label" for="forgot-email">Recovery Email</label>
+                        <input type="email" id="forgot-email" class="form-input" placeholder="Enter your email">
+                        <p id="forgot-msg" class="hidden text-[13px] font-medium mt-2 flex items-center gap-1.5"></p>
+                    </div>
+
+                    <button id="forgot-btn" onclick="handleForgotPassword()" class="btn btn-primary w-full mb-4">
+                        Reset Password
+                    </button>
+
+                    <p class="login-footer">
+                        <a href="#" onclick="showLogin()" class="text-emerald-400 hover:underline">Return to Login</a>
+                    </p>
+
+                </div>
+
+                <div id="register-box" class="hidden animate-fade">
+                    <div class="form-group">
+                        <label class="form-label" for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" class="form-input" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="reg-email">Email Address</label>
+                        <input type="email" id="reg-email" class="form-input" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="reg-password">Password</label>
+                        <input type="password" id="reg-password" class="form-input" placeholder="Create a password">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="reg-confirm-password">Confirm Password</label>
+                        <input type="password" id="reg-confirm-password" class="form-input" placeholder="Re-enter your password">
+                    </div>
+                    
+                    <button onclick="handleRegister()" class="btn btn-primary w-full mb-4">
+                        Create Account
+                    </button>
+
+                    <div id="reg-message" class="text-center mb-4 font-bold text-sm mt-2"></div>
+
+                    <p class="login-footer">
+                        Already have an account? <a href="#" onclick="showLogin()" class="hover:underline">Sign In</a>
+                    </p>
+                </div>
             </div>
-
-            <p id="password-error" class="hidden text-[#ef4444] text-[13px] font-medium mt-1.5 flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                <span>An unexpected error has occurred!</span>
-            </p>
-        </div>
-        
-        <button id="login-btn" onclick="login()" class="btn btn-primary" style="margin-bottom: 15px; width: 100%;">
-            Sign in
-        </button>
-        
-        <p class="login-footer">
-            New user? <a href="#" onclick="toggleAuth()"class="hover:underline">Create an account</a>
-        </p>
-    </div>
-
-    <div id="forgot-box" class="hidden animate-fade">
-        <div class="form-group">
-            <label class="form-label" for="forgot-email">Email Address</label>
-            <input type="email" id="forgot-email" class="form-input" placeholder="Enter your email">
-            <p id="forgot-msg" class="hidden text-[13px] font-medium mt-2 flex items-center gap-1.5"></p>
-        </div>
-
-        <button id="forgot-btn" onclick="handleForgotPassword()" class="btn btn-primary" style="margin-bottom: 15px; width: 100%;">
-            Reset your password
-        </button>
-
-        <p class="login-footer">
-            <a href="#" onclick="showLogin()" class="text-emerald-400 hover:underline">Back</a>
-        </p>
-    </div>
-
-    <div id="register-box" class="hidden animate-fade">
-        <div class="form-group">
-            <label class="form-label" for="reg-name">Your Name</label>
-            <input type="text" id="reg-name" class="form-input" placeholder="Enter your name">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="reg-email">Email</label>
-            <input type="email" id="reg-email" class="form-input" placeholder="Enter your email">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="reg-password">Password</label>
-            <input type="password" id="reg-password" class="form-input" placeholder="Create new password">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="reg-confirm-password">Confirm your password</label>
-            <input type="password" id="reg-confirm-password" class="form-input" placeholder="Re-enter password">
-        </div>
-        <button onclick="handleRegister()" class="btn btn-primary" style="margin-bottom: 15px; width: 100%;">
-            Create an account
-        </button>
-
-        <div id="reg-message" class="text-center mb-4 font-bold text-sm mt-2"></div>
-
-        <p class="login-footer">
-            Already have an account? <a href="#" onclick="showLogin()" class = "hover:underline">Sign in</a>
-        </p>
-    </div>
-</div>
         </div>
     </div>
 
