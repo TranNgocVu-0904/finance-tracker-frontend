@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
-    <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/png/wallet.png" width="200" alt="thumbnail">
+    <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/png/wallet.png" width="100" alt="thumbnail">
   </a>
 </p>
 
