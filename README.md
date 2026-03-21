@@ -1,11 +1,16 @@
 # 🖥️  finance-tracker-frontend
 
-<p align="center">
-  <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
-    <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/gif/wallet.gif" width="200" alt="thumbnail">
-  </a>
-</p>
-
+<div align="center">
+  <table bgcolor="white">
+    <tr>
+      <td align="center" style="background-color: #ffffff;">
+        <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
+          <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/gif/wallet.gif" width="200" alt="thumbnail">
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
 ## 🧠 Project Overview
 
 **Expense Tracker** is a website for personal finance management. It provides a user experience with the ability to visualize real-time data and financial models. Built with a focus on intuitive UI/UX aesthetics and reliability, this web application offers users an intuitive and secure way to take complete control of their financial journey.
@@ -50,6 +55,10 @@ This project is built with a focus on modern UI/UX, high-performance data visual
 * **Automated Quality Assurance:** A robust multi-tiered testing process utilizes **[Playwright](https://playwright.dev/)** to automate UI integration testing and **[Jest](https://jestjs.io/)** to verify complex financial logic and security filters.
 
 * **Optimized CI/CD Process:** Automation via [GitHub Actions](https://github.com/features/actions) and [Vercel](https://www.google.com/search?q=https://vercel.com/solutions/continuous-deployment), using `git diff` logic and path filtering to ensure rapid deployment and optimal resource utilization.
+
+* **Personalized User Experience:** Customizable with visual theme switching, enabling/disabling the environmental effect, and interactive sound notifications to enhance user interaction.
+
+* **State Storage:** Seamlessly maintain user preferences (Theme, Sound, UI On/Off) across sessions using **`localStorage`**, ensuring a consistent experience without redundant backend function calls.
 
 ## 🚧 Frontend Architecture
 
