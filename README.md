@@ -1,2 +1,83 @@
-# finance-tracker-frontend
-Testing
+# 🖥️  finance-tracker-frontend
+
+<a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
+
+<img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/blob/main/assets/gif/wallet.gif" alt="thubnail">
+</a>
+
+## 🧠 Project Overview
+
+**Expense Tracker** is a website for personal finance management. It provides a user experience with the ability to visualize real-time data and financial models. Built with a focus on intuitive UI/UX aesthetics and reliability, this web application offers users an intuitive and secure way to take complete control of their financial journey.
+
+## 🔗 Backend Github Link
+
+This is a link to the project's frontend on Github:
+[Finance Tracker Backend Github](https://github.com/TranNgocVu-0904/finance-tracker-backend.git)
+
+## 🛠️ Tech Stack
+
+This project is built with a focus on modern UI/UX, high-performance data visualization, and a professional-grade testing suite:
+
+* **Core Interface:** [HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML) & [Tailwind CSS](https://tailwindcss.com/) - Utilizing a Glassmorphism design language for a sleek, modern financial dashboard.
+
+* **Language:** [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Leveraging asynchronous programming (`async/await`) and modular logic.
+
+* **Data Visualization:** [Chart.js](https://www.chartjs.org/) - Powering interactive analytics and financial projection graphs.
+
+* **Security Logic:** [JWT Strategy](https://jwt.io/) - Client-side token authentication and secure routing management via `localStorage`.
+
+* **Unit Testing:** [Jest](https://jestjs.io/) & [JSDOM](https://github.com/jsdom/jsdom) - Ensuring 100% accuracy for financial calculations and authentication logic.
+
+* **UI Integration Testing:** [Playwright](https://playwright.dev/) - Automated browser testing with advanced **API Mocking** and network interception capabilities.
+
+* **CI/CD Pipeline:** [GitHub Actions](https://github.com/features/actions) & [Vercel](https://www.google.com/search?q=https://vercel.com/solutions/continuous-deployment) - A dual-layered pipeline: GitHub Actions handles **Continuous Integration (CI)** for testing, while Vercel manages **Continuous Deployment (CD)** with  build-trigger logic.
+
+* **Automation Tooling:** [npx](https://www.npmjs.com/package/npx) - Used to execute package binaries (like Playwright) directly from `node_modules`, ensuring a consistent testing environment across local and CI workflow.
+
+* **Package Management:** [npm](https://www.npmjs.com/) - Essential for dependency versioning and managing standardized automation scripts.
+
+## 🔑 Key Features
+
+* **Full Authentication Lifecycle:** Besides secure login, the system includes a robust **Password Recovery** process ([`reset-password.js`](reset-password.js)) with token-based verification.
+
+* **Intelligent Authentication and Routing:** Real-time monitoring of JWT expiration dates and contextual automatic redirection ([`auth.js`](auth.js)).
+
+* **Advanced Financial Model:** A  **Sandbox Engine** ([`sandbox.js`](sandbox.js)) calculates inflation-adjusted growth, isolated for trusted accuracy testing.
+
+* **Interactive Data Visualization:** data aggregation logic ([`analytics.js`](analytics.js)) and dashboard orchestration (`app.js`) are supported by  **[Chart.js](https://www.chartjs.org/)**.
+
+* **UI Components System:** Custom pop-up notifications and confirmation dialogs ([`components.js`](components.js)) for a seamless user experience.
+
+* **Personalized Audio Feedback and User Experience:** Detail-level control over UI aesthetics (Orbs/Glassmorphism) via [`settings.js`](settings.js) and dynamic sounds via [`sound-helper.js`](sound-helper.js).
+
+* **Automated Quality Testing:** A robust multi-tiered testing process using **[Playwright](https://playwright.dev/)** for automated UI integration testing and **[Jest](https://jestjs.io/)** for validating financial logic and security filters.
+
+* **CI/CD Process:** Automation via [GitHub Actions](https://github.com/features/actions) and [Vercel](https://www.google.com/search?q=https://vercel.com/solutions/continuous-deployment), using `git diff` logic and path filtering to ensure rapid deployment and optimal resource utilization.
+
+## 🚧 Frontend Architecture
+
+The application follows a modular **Layered Architecture** to ensure a strict separation of concerns across all **9 core logic modules**:
+
+* **Security & Access Layer:**
+
+  * [`auth.js`](auth.js): The global security guard handling JWT validation and route protection.
+
+  * [`login.js`](login.js) & [`reset-password.js`](reset-password.js): Manage the complete authentication lifecycle, from secure entry to account recovery.
+
+* **Presentation & Component Layer:**
+
+  * [`app.js`](app.js): The primary controller orchestrating the main Dashboard state and interactions.
+
+  * [`components.js`](components.js): A dedicated UI library managing custom modals, toasts, and reusable HTML templates.
+
+* **Business Logic (Service) Layer:**
+
+  * [`sandbox.js`](sandbox.js): The financial modeling engine for wealth projection and compound interest math.
+
+  * [`analytics.js`](analytics.js): Handles data aggregation and state management for pass data.
+
+* **Utility & Infrastructure Layer:**
+
+  * [`settings.js`](settings.js): Manages user profile updates and visual preference configurations.
+
+  * [`sound-helper.js`](sound-helper.js): An audio utility providing interactive feedback for system events.
