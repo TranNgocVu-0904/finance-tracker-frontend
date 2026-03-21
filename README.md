@@ -1,16 +1,18 @@
 # 🖥️  finance-tracker-frontend
 
-<div align="center">
-  <table bgcolor="white">
-    <tr>
-      <td align="center" style="background-color: #ffffff;">
-        <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
-          <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/gif/wallet.gif" width="200" alt="thumbnail">
-        </a>
-      </td>
-    </tr>
-  </table>
-</div>
+<<table width="100%" bgcolor="white">
+  <tr>
+    <td align="center">
+      <br>
+      <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
+        <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/gif/wallet.gif" width="200" alt="thumbnail">
+      </a>
+      <br>
+      <br>
+    </td>
+  </tr>
+</table>
+
 ## 🧠 Project Overview
 
 **Expense Tracker** is a website for personal finance management. It provides a user experience with the ability to visualize real-time data and financial models. Built with a focus on intuitive UI/UX aesthetics and reliability, this web application offers users an intuitive and secure way to take complete control of their financial journey.
