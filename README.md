@@ -1,17 +1,10 @@
 # 🖥️  finance-tracker-frontend
 
-<table width="100%" bgcolor="white">
-  <tr>
-    <td align="center">
-      <br>
-      <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
-        <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/gif/wallet.gif" width="200" alt="thumbnail">
-      </a>
-      <br>
-      <br>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
+    <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/gif/wallet.gif" width="200" alt="thumbnail">
+  </a>
+</p>
 
 ## 🧠 Project Overview
 
