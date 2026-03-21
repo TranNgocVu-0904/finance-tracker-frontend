@@ -1,6 +1,6 @@
 # 🖥️  finance-tracker-frontend
 
-<<table width="100%" bgcolor="white">
+<table width="100%" bgcolor="white">
   <tr>
     <td align="center">
       <br>
