@@ -82,3 +82,15 @@ The application follows a modular **Layered Architecture** to ensure a strict se
   * [`settings.js`](settings.js): Manages user profile updates and visual preference configurations.
 
   * [`sound-helper.js`](sound-helper.js): An audio utility providing interactive feedback for system events.
+
+## ☁️ Infrastructure & Deployment
+
+The user interface is designed for ease of use and automated distribution, ensuring all code changes are validated and deployed without manual intervention.
+
+* **Continuous Deployment (CD):** [Vercel](https://vercel.com/) - Hosting as the production website.  Using `git diff` to evaluate changes. If modifications are limited to documentation or non-core assets, the build process would be skipped.
+
+* **Continuous Integration (CI):** [GitHub Actions](https://github.com/features/actions) - Coordinates automated testing. It performs two-thread validation:
+
+* **Unit Testing:** Runs **Jest** for  core calculations.
+
+* **UI Integration Testing:** **Playwright** is only triggered when UI-oriented files are modified, ensuring efficient feedback loops.
