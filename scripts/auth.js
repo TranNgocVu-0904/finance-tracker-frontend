@@ -12,6 +12,45 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
     ? 'http://127.0.0.1:8081' 
     : 'https://finance-tracker-backend-9qsm.onrender.com';
 
+// ==========================================
+// PART 1: LOGIC (Unit Test)
+// ==========================================
+
+/**
+ * Evaluates the expiration status of a JSON Web Token (JWT).
+ * @param {string|null} token - The base64 encoded JWT.
+ * @param {number} currentTimeInSeconds - The current epoch time in seconds.
+ * @returns {boolean} True if the token is invalid, missing, or expired; otherwise false.
+ */
+function isTokenExpired(token, currentTimeInSeconds) {
+    if (!token) return true;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp < currentTimeInSeconds;
+    } catch (e) {
+        return true; 
+    }
+}
+
+/**
+ * Determines the appropriate routing action based on session validity and current page context.
+ * @param {boolean} isExpired - The expiration state of the current session.
+ * @param {boolean} isAuthPage - Indicates if the user is currently on an authentication page.
+ * @returns {string} The designated action directive ('LOGOUT_AND_REDIRECT', 'GO_TO_DASHBOARD', or 'STAY').
+ */
+function getSecurityAction(isExpired, isAuthPage) {
+
+    if (isExpired && !isAuthPage) 
+        return 'LOGOUT_AND_REDIRECT';
+    if (!isExpired && isAuthPage) 
+        return 'GO_TO_DASHBOARD';
+    return 'STAY';
+}
+
+// ==========================================
+// PART 2: IMPURE WRAPPER (Browser API Interoperability)
+// ==========================================
+
 /**
  * Validates the user's authentication state and manages routing permissions.
  * Prevents unauthorized access to protected routes and redirects authenticated 
@@ -19,38 +58,41 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
  */
 function checkSecurityGuard() {
     const token = localStorage.getItem('jwt_token');
-    const currentPath = window.location.pathname;
-    const isAuthPage = currentPath.includes('login.html');
+    const isAuthPage = window.location.pathname.includes('login.html');
+    const now = Date.now() / 1000;
 
-    // Step 1: Token Lifecycle Validation (JWT Payload Decoding)
-    let isTokenExpired = true;
-    if (token) {
-        try {
-            // Extract and decode the JWT payload to verify the expiration timestamp (exp)
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            isTokenExpired = payload.exp < Date.now() / 1000;
-        } catch (e) {
-            console.error("Invalid token format detected.");
-            isTokenExpired = true; 
-        }
-    }
+    const expired = isTokenExpired(token, now);
+    const action = getSecurityAction(expired, isAuthPage);
 
-    // Step 2: Routing Logic Enforcement
-    
-    // CASE 1: Token is expired or missing while accessing protected resources.
-    if (isTokenExpired && !isAuthPage) {
-        localStorage.removeItem('jwt_token'); // Purge corrupted or expired credentials
+    if (action === 'LOGOUT_AND_REDIRECT') {
+
+        localStorage.removeItem('jwt_token');
         window.location.href = 'login.html';
     } 
-    // CASE 2: Active session detected while on the authentication page.
-    // Automatically reroutes to the dashboard to prevent redundant logins.
-    else if (!isTokenExpired && isAuthPage) {
+    else if (action === 'GO_TO_DASHBOARD') {
         window.location.href = 'index.html';
     }
 }
 
-// Immediate execution upon script loading to secure the route before rendering.
-checkSecurityGuard();
+// ==========================================
+// PART 3: EXPORT FOR JEST
+// ==========================================
+
+// Module export bridge for Node.js (Jest) testing environment compatibility.
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { 
+        isTokenExpired, 
+        getSecurityAction,
+        toggleAuth,
+        logout,
+    };
+}
+
+// Immediate execution upon script loading (only in real browser, prevented in Jest)
+if (typeof process === 'undefined' || process.env.NODE_ENV !== 'test') {
+    checkSecurityGuard();
+    document.addEventListener("DOMContentLoaded", applyGlobalAppearance);
+}
 
 /**
  * Standardized global logout procedure.

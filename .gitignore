@@ -1,1 +1,26 @@
+# Dependencies - Extremely heavy, never put on
+node_modules/
+
+# Playwright Artifacts - Junk files generated after running UI tests
+
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Environment - Security (Although not visible in the tree, it will definitely be needed)
+.env
+.env.local
+
+# OS Metadata - Operating system junk
 .DS_Store
+Thumbs.db
+
+# Logs - npm error reports
+npm-debug.log*
+
+# Playwright
+node_modules/
+
+

@@ -1,0 +1,72 @@
+name: Financial Tracker CI/CD
+
+on:
+  push:
+    branches: [ main, master ]
+    paths-ignore:
+      - 'README.md'
+      - 'assets/**'
+      - 'docs/**'
+      - '.gitignore'
+
+  pull_request:
+    branches: [ main, master ]
+    paths-ignore:
+      - 'README.md'
+      - 'assets/**'
+      - 'docs/**'
+
+jobs:
+  test-suite:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2 # Important: Get an older commit to compare the git diff.
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    # 2. CHECK CHANGES
+    - name: Check for UI-related changes
+      id: check_ui
+      run: |
+        # Check if any files have changed THAT are NOT unit_test
+        if git diff --quiet HEAD^ HEAD . ':(exclude)tests/unit_test/*'; then
+          echo "ui_changed=false" >> $GITHUB_OUTPUT
+          echo "No UI changes detected. Skipping Playwright."
+        else
+          echo "ui_changed=true" >> $GITHUB_OUTPUT
+          echo "UI or Integration changes detected. Playwright will run."
+        fi
+
+    # RUN UNIT TESTS (JEST): Bước này luôn chạy vì nó rất nhẹ và quan trọng
+    - name: Run Unit Tests
+      run: npm test
+
+    # 3. CONDITIONAL PLAYWRIGHT: Chỉ chạy nếu bước trên báo 'ui_changed=true'
+    - name: Install Playwright Browsers
+      if: steps.check_ui.outputs.ui_changed == 'true'
+      run: npx playwright install --with-deps
+
+    - name: Run Playwright tests
+      if: steps.check_ui.outputs.ui_changed == 'true'
+      run: npx playwright test
+
+    # SAVE THE REPORT: Chỉ lưu report nếu Playwright có thực hiện chạy
+    - name: Upload Playwright Report
+      uses: actions/upload-artifact@v4
+      if: steps.check_ui.outputs.ui_changed == 'true' && always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
