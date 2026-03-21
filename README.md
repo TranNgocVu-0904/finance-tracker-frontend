@@ -1,9 +1,10 @@
 # 🖥️  finance-tracker-frontend
 
-<a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
-
-<img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/blob/main/assets/gif/wallet.gif" alt="thubnail">
-</a>
+<p align="center">
+  <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
+    <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/gif/wallet.gif" width="200" alt="thumbnail">
+  </a>
+</p>
 
 ## 🧠 Project Overview
 
@@ -36,23 +37,19 @@ This project is built with a focus on modern UI/UX, high-performance data visual
 
 * **Package Management:** [npm](https://www.npmjs.com/) - Essential for dependency versioning and managing standardized automation scripts.
 
-## 🔑 Key Features
+## 🎉 Key Features
 
-* **Full Authentication Lifecycle:** Besides secure login, the system includes a robust **Password Recovery** process ([`reset-password.js`](reset-password.js)) with token-based verification.
+* **Authenticity & Navigation:** Secure JWT-based session management with real-time token expiration authentication and automatic redirection between protected and public sites.
 
-* **Intelligent Authentication and Routing:** Real-time monitoring of JWT expiration dates and contextual automatic redirection ([`auth.js`](auth.js)).
+* **Interactive Trading Features:** Seamless interface for managing income and expenses, with real-time portfolio filtering, global search, and dynamic data updates for a smooth user experience.
 
-* **Advanced Financial Model:** A  **Sandbox Engine** ([`sandbox.js`](sandbox.js)) calculates inflation-adjusted growth, isolated for trusted accuracy testing.
+* **Financial Testing Environment:** A What-if sandbox that asset growth over 10 years, incorporating real-world variables such as inflation and monthly capital.
 
-* **Interactive Data Visualization:** data aggregation logic ([`analytics.js`](analytics.js)) and dashboard orchestration (`app.js`) are supported by  **[Chart.js](https://www.chartjs.org/)**.
+* **Real-time Data Visualization:** Dynamic spending analysis and financial trend analysis powered by **[Chart.js](https://www.chartjs.org/)**, providing users with instant and useful insights into their expense habits.
 
-* **UI Components System:** Custom pop-up notifications and confirmation dialogs ([`components.js`](components.js)) for a seamless user experience.
+* **Automated Quality Assurance:** A robust multi-tiered testing process utilizes **[Playwright](https://playwright.dev/)** to automate UI integration testing and **[Jest](https://jestjs.io/)** to verify complex financial logic and security filters.
 
-* **Personalized Audio Feedback and User Experience:** Detail-level control over UI aesthetics (Orbs/Glassmorphism) via [`settings.js`](settings.js) and dynamic sounds via [`sound-helper.js`](sound-helper.js).
-
-* **Automated Quality Testing:** A robust multi-tiered testing process using **[Playwright](https://playwright.dev/)** for automated UI integration testing and **[Jest](https://jestjs.io/)** for validating financial logic and security filters.
-
-* **CI/CD Process:** Automation via [GitHub Actions](https://github.com/features/actions) and [Vercel](https://www.google.com/search?q=https://vercel.com/solutions/continuous-deployment), using `git diff` logic and path filtering to ensure rapid deployment and optimal resource utilization.
+* **Optimized CI/CD Process:** Automation via [GitHub Actions](https://github.com/features/actions) and [Vercel](https://www.google.com/search?q=https://vercel.com/solutions/continuous-deployment), using `git diff` logic and path filtering to ensure rapid deployment and optimal resource utilization.
 
 ## 🚧 Frontend Architecture
 
