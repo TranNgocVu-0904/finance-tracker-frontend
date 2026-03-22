@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://finance-tracker-frontend-theta-brown.vercel.app/">
-    <img src="https://github.com/TranNgocVu-0904/finance-tracker-frontend/raw/main/assets/png/wallet.png" width="100" alt="thumbnail">
+    <img src="assets/gif/wallet.gif" width="100" alt="thumbnail">
   </a>
 </p>
 
@@ -61,27 +61,27 @@ The application follows a modular **Layered Architecture** to ensure a strict se
 
 * **Security & Access Layer:**
 
-  * [`auth.js`](auth.js): The global security guard handling JWT validation and route protection.
+  * [`auth.js`](scripts/auth.js): The global security guard handling JWT validation and route protection.
 
-  * [`login.js`](login.js) & [`reset-password.js`](reset-password.js): Manage the complete authentication lifecycle, from secure entry to account recovery.
+  * [`login.js`](scripts/login.js) & [`reset-password.js`](scripts/reset-password.js): Manage the complete authentication lifecycle, from secure entry to account recovery.
 
 * **Presentation & Component Layer:**
 
-  * [`app.js`](app.js): The primary controller orchestrating the main Dashboard state and interactions.
+  * [`app.js`](scripts/app.js): The primary controller orchestrating the main Dashboard state and interactions.
 
-  * [`components.js`](components.js): A dedicated UI library managing custom modals, toasts, and reusable HTML templates.
+  * [`components.js`](scripts/components.js): A dedicated UI library managing custom modals, toasts, and reusable HTML templates.
 
 * **Business Logic (Service) Layer:**
 
-  * [`sandbox.js`](sandbox.js): The financial modeling engine for wealth projection and compound interest math.
+  * [`sandbox.js`](scripts/sandbox.js): The financial modeling engine for wealth projection and compound interest math.
 
-  * [`analytics.js`](analytics.js): Handles data aggregation and state management for pass data.
+  * [`analytics.js`](scripts/analytics.js): Handles data aggregation and state management for pass data.
 
 * **Utility & Infrastructure Layer:**
 
-  * [`settings.js`](settings.js): Manages user profile updates and visual preference configurations.
+  * [`settings.js`](scripts/settings.js): Manages user profile updates and visual preference configurations.
 
-  * [`sound-helper.js`](sound-helper.js): An audio utility providing interactive feedback for system events.
+  * [`sound-helper.js`](scripts/sound-helper.js): An audio utility providing interactive feedback for system events.
 
 ## ☁️ Infrastructure & Deployment
 
@@ -91,6 +91,96 @@ The user interface is designed for ease of use and automated distribution, ensur
 
 * **Continuous Integration (CI):** [GitHub Actions](https://github.com/features/actions) - Coordinates automated testing. It performs two-thread validation:
 
-* **Unit Testing:** Runs **Jest** for  core calculations.
+* **Unit Testing:** Runs **[Jest](https://jestjs.io/)** for  core calculations.
 
-* **UI Integration Testing:** **Playwright** is only triggered when UI-oriented files are modified, ensuring efficient feedback loops.
+* **UI Integration Testing:** **[Playwright](https://playwright.dev/)** is only triggered when UI-oriented files are modified, ensuring efficient feedback loops.
+
+## 🚀 Getting Started
+
+To launch the frontend locally:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/TranNgocVu-0904/finance-tracker-frontend.git
+
+cd finance-tracker-frontend
+```
+
+### 2. Launch the Application
+
+To view the website, we recommend using the **Live Server** extension in VS Code:
+
+1. Open the project folder in **VS Code**.
+2. Install the **"Live Server"** extension (by Ritwick Dey) from the Extensions.
+3. Right-click on the file that you want to display and select **"Open with Live Server"**.
+4. The app will automatically open in your default browser at `http://127.0.0.1:5500`.
+
+### Note
+
+If you don't want to click on each file, just look at the bottom right corner; you'll find the **GoLive** button:
+
+![Go Live](assets/png/Golive.png "Go Live Button")
+
+## 🧪 Testing Guide
+
+The user interface section includes unit tests and UI integration test cases to ensure the correctness of the logic and the stability of the user interface.
+
+### 1. Running Unit Tests
+
+Before running unit tests, you must install  **[Jest](https://jestjs.io/)**:
+
+```bash
+npm install --save-dev jest jest-environment-jsdom servor 
+```
+
+Use **Jest** to validate core financial calculations (compound interest, aggregation) and security filters:
+
+```bash
+# Run all unit tests
+npm run test
+```
+
+### 2. Running UI Integration Tests
+
+Before running UI tests, you must install the automated browser engines required by [Playwright](https://playwright.dev/):
+
+```bash
+npm init playwright@latest
+```
+
+Use **Playwright** to simulate real user path. Note that the system is configured to **Mock API** responses, so you don't need the backend running to perform these tests.
+
+* **Headless Mode** (Fastest, runs in background):
+
+    ```bash
+    npx run test
+    ```
+
+> Or if you want, this command I have configured in [package.json](package.json):
+
+    ```bash
+    npm run test:ui
+    ```
+
+* **UI Mode** (Interactive dashboard for debugging):
+
+    ```bash
+    npx playwright test --ui
+    ```
+
+> Or if you want, this command I have configured in [package.json](package.json):
+
+  ```bash
+  npm playwright test:ui:show
+  ```
+
+* **Headed Mode** (See the bot interacting with the browser):
+
+  ```bash
+  npx playwright test --headed
+  ```
+
+### Note
+
+To run the test correctly, please make sure that your `package.json` and `playwright.config.js` files look like this: [`package.json`](package.json) and [`playwright.config.js`](`playwright.config.js`)
