@@ -165,9 +165,9 @@ Use **Playwright** to simulate real user path. Note that the system is configure
 
 * **UI Mode** (Interactive dashboard for debugging):
 
-    ```bash
-    npx playwright test --ui
-    ```
+  ```bash
+  npx playwright test --ui
+  ```
 
 > Or if you want, this command I have configured in [package.json](package.json):
 
