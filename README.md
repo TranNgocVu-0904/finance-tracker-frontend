@@ -162,7 +162,6 @@ Use **Playwright** to simulate real user path. Note that the system is configure
     ```bash
     npm run test:ui
     ```
-
 * **UI Mode** (Interactive dashboard for debugging):
 
     ```bash
