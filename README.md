@@ -157,18 +157,18 @@ Use **Playwright** to simulate real user path. Note that the system is configure
     npx run test
     ```
 
-> And also, this command I have configured in [package.json](package.json):
+> Or if you want, this command I have configured in [package.json](package.json):
 
-    ```bash
-    npm run test:ui
-    ```
+```bash
+npm run test:ui
+```
 * **UI Mode** (Interactive dashboard for debugging):
 
     ```bash
     npx playwright test --ui
     ```
 
-> Or if you want, this command I have configured in [package.json](package.json):
+> And also, this command I have configured in [package.json](package.json):
 
 ```bash
 npm run test:ui:show
