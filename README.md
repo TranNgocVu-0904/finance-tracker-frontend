@@ -120,7 +120,7 @@ To view the website, we recommend using the **Live Server** extension in VS Code
 
 If you don't want to click on each file, just look at the bottom right corner; you'll find the **GoLive** button:
 
-![Go Live](assets/png/Golive.png "Go Live Button")
+![Go Live](assets/png/Golive.png)
 
 ## 🧪 Testing Guide
 
